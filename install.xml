@@ -1,0 +1,100 @@
+<?xml version="1.0"?>
+<!DOCTYPE modification SYSTEM "http://www.simplemachines.org/xml/modification">
+<modification xmlns="http://www.simplemachines.org/xml/modification" xmlns:smf="http://www.simplemachines.org/">
+<name>Restrict Emails on Registration</name>
+<id>Defron:Restrict_Emails_on_Registration</id>
+<version>1.0</version>
+
+<file name="$sourcedir/Subs-Members.php">
+<operation>
+	<search position="replace"><![CDATA[	// !!! Separate the sprintf?
+	if (empty($regOptions['email']) || preg_match('~^[0-9A-Za-z=_+\-/][0-9A-Za-z=_\'+\-/\.]*@[\w\-]+(\.[\w\-]+)*(\.[\w]{2,6})$~', $regOptions['email']) === 0 || strlen($regOptions['email']) > 255)
+		$reg_errors[] = array('lang', 'profile_error_bad_email');]]></search>
+	<add><![CDATA[   // !!! Separate the sprintf?
+    if (empty($regOptions['email']) || preg_match('~^[0-9A-Za-z=_+\-/][0-9A-Za-z=_\'+\-/\.]*@[\w\-]+(\.[\w\-]+)*(\.[\w]{2,6})$~', $regOptions['email']) === 0 || strlen($regOptions['email']) > 255)
+        $reg_errors[] = array('lang', 'profile_error_bad_email');
+        
+    // Lets restrict some email providers
+    if (!empty($modSettings['enable_restrict_Emails']) && !empty($modSettings['blacklist_rules_email']) && !empty($regOptions['email'])) {
+      
+        $email_rules_blacklist = explode(",", $modSettings['blacklist_rules_email']);
+        foreach ($email_rules_blacklist as $key => $value){
+            if (empty($value)){
+                unset($email_rules_blacklist[$key]);
+            }
+        }
+        foreach($email_rules_blacklist as $provider){
+            if(strpos($regOptions['email'], $provider) !== FALSE){
+                fatal_error(sprintf($txt['restricted'], $regOptions['username']), false);
+            }
+        }
+    } elseif (!empty($modSettings['enable_restrict_Emails']) && !empty($modSettings['whitelist_rules_email']) && !empty($regOptions['email'])){
+      
+        $email_rules_whitelist = explode(",", $modSettings['whitelist_rules_email']);
+        foreach ($email_rules_whitelist as $key => $value){
+            if (empty($value)){
+                unset($email_rules_whitelist[$key]);
+            }
+        }
+        $email_rules_whitelist_match = FALSE;
+        foreach($email_rules_whitelist as $provider){         
+            if(strpos($regOptions['email'], $provider) !== FALSE){
+                $email_rules_whitelist_match = TRUE;
+                break;
+            }
+        }
+        if(!$email_rules_whitelist_match){
+            fatal_error(sprintf($txt['restricted'], $regOptions['username']), false);
+        }
+    }else{
+      //no restrictions on email providers
+    }]]></add>
+	</operation>
+	
+</file>
+
+<file name="$sourcedir/ManageSettings.php">
+<operation>
+	<search position="before"><![CDATA[		// Mod authors, add any settings UNDER this line. Include a comma at the end of the line and don't remove this statement!!
+]]></search>
+	<add><![CDATA[
+			array('check', 'enable_restrict_Emails',
+			&$txt['enable_restrict_Emails']), 
+			array('text', 'blacklist_rules_email', '35', 
+			&$txt['blacklist_rules_email']),
+			array('text', 'whitelist_rules_email', '35', 
+			&$txt['whitelist_rules_email']),
+]]></add>
+	</operation>
+
+</file>
+
+
+
+<file name="$languagedir/Modifications.english.php">
+	<operation>
+	<search position="end" />
+	<add><![CDATA[$txt['restricted'] = 'Sorry, the given email account cannot be used. Below is a list of current email restrictions enforced by these forums: <br /><br />Blacklist email rules: ' . (strlen($modSettings['blacklist_rules_email']) > 0 ? $modSettings['blacklist_rules_email'] . ' ' : 'No current rules ') . '<br /><br /> Whitelist email rules: ' . (strlen($modSettings['whitelist_rules_email']) > 0 ? $modSettings['whitelist_rules_email'] : 'No current rules ') . '<br /><br />Please try again with a different email address that conforms to those rules. We appologize for any inconvenience this has caused you.';
+$txt['enable_restrict_Emails'] = 'Enable restriction of emails on registration<br /><span style="font-weight: bold; color: red">Note that you CANNOT both blacklist AND whitelist</span>';
+$txt['blacklist_rules_email'] = 'Comma-separated list of strings to <span style="font-weight: bold; color: red">Blacklist</span> from email addresses <br /><span style="font-style: italic"> (As an example, to forbid the providers <span style="font-weight: bold; color: red">hotmail and gmail</span> you should enter "@hotmail.com,@gmail.com").</span>';
+$txt['whitelist_rules_email'] = 'Comma-separated list of strings to <span style="font-weight: bold; color: red">Whitelist</span> from email addresses <br /><span style="font-style: italic"> (As an example, to only allow the providers <span style="font-weight: bold; color: red">hotmail and gmail</span> you should enter "@hotmail.com,@gmail.com").</span>';
+]]></add>
+	</operation>
+</file>
+
+<file name="$languagedir/Modifications.english-utf8.php" error="skip">
+	<operation>
+	<search position="end" />
+	<add><![CDATA[$txt['restricted'] = 'Sorry, the given email account cannot be used. Below is a list of current email restrictions enforced by these forums: <br /><br />Blacklist email rules: ' . (strlen($modSettings['blacklist_rules_email']) > 0 ? $modSettings['blacklist_rules_email'] . ' ' : 'No current rules ') . '<br /><br /> Whitelist email rules: ' . (strlen($modSettings['whitelist_rules_email']) > 0 ? $modSettings['whitelist_rules_email'] : 'No current rules ') . '<br /><br />Please try again with a different email address that conforms to those rules. We appologize for any inconvenience this has caused you.';
+$txt['enable_restrict_Emails'] = 'Enable restriction of emails on registration<br /><span style="font-weight: bold; color: red">Note that you CANNOT both blacklist AND whitelist</span>';
+$txt['blacklist_rules_email'] = 'Comma-separated list of strings to <span style="font-weight: bold; color: red">Blacklist</span> from email addresses <br /><span style="font-style: italic"> (As an example, to forbid the providers <span style="font-weight: bold; color: red">hotmail and gmail</span> you should enter "@hotmail.com,@gmail.com").</span>';
+$txt['whitelist_rules_email'] = 'Comma-separated list of strings to <span style="font-weight: bold; color: red">Whitelist</span> from email addresses <br /><span style="font-style: italic"> (As an example, to only allow the providers <span style="font-weight: bold; color: red">hotmail and gmail</span> you should enter "@hotmail.com,@gmail.com").</span>';
+]]></add>
+	</operation>
+</file>
+
+
+
+
+
+</modification>

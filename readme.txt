@@ -1,23 +1,24 @@
 
-[size=4][color=red][b]Restrict Email Providers on Registration[/b][/color][/size]
+[size=4][color=red][b]Restrict Emails on Registration[/b][/color][/size]
 
-Version: 1.1 Date 2008-11-29
-Compatibility: SMF 1.1.6,1.1.7 , SMF 2.0 Beta 4
+Version: 1.0 Date 2015-01-18
+Compatibility: SMF 2.0.7-2.0.9 (tested)
 
-
-[hr]
-
-This modification gives the Admin the chance ,to restrict some of E-Mail providers on registration.It will be sometimes useful,because some of users
-are complaining about,that they can not get the activation mail and not activate their account.Such E-Mail providers should be restricted 
-via that Modification and then your users won't have no more problems with the activation...
 
 [hr]
 
-[color=red][b]How can you activate it ?[/b][/color]
+This modification gives the admin the chance to restrict emails allowed to be used for registration. It is sometimes useful to limit the emails used to register to stop spam, create a semi-private forum more easily, or to stop people from signing up with problematic email providers.
 
-Admin -> Features and Options -> Enable restriction of E-Mail providers on registration (SMF 1.1.6)
-Admin -> Modifications -> Enable restriction of E-Mail providers on registration (SMF 2.0 Beta 4)
+You will be able to create email rules of one of two types: blacklists or whitelists. Your lists can be made up of any valid string that can be in an email address. This allows you to do more than just forbid email addresses from a specific domain (eg, '@gmail.com'), but you can ban all email addresses that contain a certain string (eg, 'john.smith') as well.
 
-Greetz
-Duncan85
+This mod was based on [url=http://custom.simplemachines.org/mods/index.php?mod=1493]Restrict Email Providers on Registration[/url]
+
+[hr]
+
+[color=red][b]How do you activate it?[/b][/color]
+
+Admin -> Package Manager -> Modification Packages -> Install Mod "Restrict Email Providers on Registration"
+
+Later days
+Defron
 

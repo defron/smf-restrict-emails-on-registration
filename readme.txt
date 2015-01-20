@@ -11,7 +11,7 @@ This modification gives the admin the chance to restrict emails allowed to be us
 
 You will be able to create email rules of one of two types: blacklists or whitelists. Your lists can be made up of any valid string that can be in an email address. This allows you to do more than just forbid email addresses from a specific domain (eg, '@gmail.com'), but you can ban all email addresses that contain a certain string (eg, 'john.smith') as well.
 
-This mod was forked from [url=http://custom.simplemachines.org/mods/index.php?mod=1493]Restrict Email Providers on Registration[/url]
+This mod was inspired by [url=http://custom.simplemachines.org/mods/index.php?mod=1493]Restrict Email Providers on Registration[/url]
 
 [hr]
 
@@ -19,10 +19,18 @@ This mod was forked from [url=http://custom.simplemachines.org/mods/index.php?mo
 
 Admin -> Package Manager -> Modification Packages -> Install Mod "Restrict Email Providers on Registration"
 
+[hr]
+
 Later days
 Defron
 
 [hr]
+
+[color=red][b]How do you configure it?[/b][/color]
+
+To configure go Admin -> Configuration -> Modification Settings -> Miscellaneous and follow instructions on valid settings.
+
+You may wish to clear your file cache after configuration to guarantee they instantly go into effect. See: [url]http://wiki.simplemachines.org/smf/SMF2.0:Forum_Maintenance[/url]
 
 [color=red][b]Changelog[/b][/color]
 
